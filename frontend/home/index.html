@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Auth</title>
+
+    <style>
+        section {
+            width: 30rem;
+            margin: auto;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+        }
+
+        div {
+            margin: 1rem;
+            padding: 0.25rem;
+
+        }
+
+        button {
+            /* margin-top: 1rem; */
+            font: inherit;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover,
+        button:active {
+            box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.26);
+        }
+    </style>
+</head>
+
+<body>
+    <Section>
+        <h1>Welcome, <span></span></h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur voluptas adipisci modi at commodi, nisi
+            ipsum nam voluptatem quisquam? Quidem, quis. Quibusdam, esse porro accusantium ipsam magni cupiditate,
+            magnam asperiores odit animi dolore, culpa quos hic laborum tempora nostrum ea.</p>
+        <button onclick="clickLogout()">Logout</button>
+    </Section>
+    <section style="text-align: center;">
+        Made by <i>Vipin Kumar Saini</i>
+    </section>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('name');
+        let userName = document.querySelector('span')
+
+        userName.innerText = "User";
+        if (myParam) {
+            userName.innerText = myParam.toLocaleUpperCase();
+        }
+
+        function clickLogout() {
+            let origin = location.origin;
+            let url = origin + "/auth/logout";
+
+            fetch(url, {
+                    method: "POST"
+                })
+                .then(resp => resp.json())
+                .then(result => {
+                    console.log(result);
+                    location.href = "/";
+                })
+                .catch(e => console.error(e));
+        }
+    </script>
+</body>
+
+</html>

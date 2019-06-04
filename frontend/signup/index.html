@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Auth</title>
+
+    <style>
+        section {
+            width: 30rem;
+            margin: auto;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-radius: 5px;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+        }
+
+        div {
+            margin: 1rem;
+            padding: 0.25rem;
+
+        }
+
+        h2 {
+            text-align: center;
+            color: grey;
+        }
+
+        label,
+        input,
+        textarea {
+            font-size: 1rem;
+            width: 100%;
+            height: 1.5rem;
+            /* padding: 0.25rem; */
+        }
+
+        button {
+            /* margin-top: 1rem; */
+            font: inherit;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid #007bff;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover,
+        button:active {
+            box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.26);
+        }
+
+        a {
+            float: right;
+            text-decoration: none;
+            /* cursor: pointer; */
+            color: blue;
+        }
+
+        .errorMsg {
+            display: none;
+            border: 1px solid rgba(255, 0, 0, 0.726);
+            color: red;
+            background-color: rgba(255, 0, 0, 0.068);
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.26);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="errorMsg"></section>
+
+    <section id="signup">
+        <h2><u>Sign Up</u></h2>
+        <form id="signupForm" action="/auth/signup" method="post">
+            <div>
+                <label for="fullname">Fullname</label>
+                <input type="text" name="name" id="signup_fullname" required />
+            </div>
+            <div>
+                <label for="signup_password">Password</label>
+                <input type="password" name="password" id="signup_password" minlength="5" title="Must contain at least one number and one uppercase and lowercase letter, and at least 5 or more
+                characters" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$" required />
+            </div>
+            <div>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" minlength="5" title="Must contain at least one number and one uppercase and lowercase letter, and at least 5 or more
+                characters" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{5,}$" required />
+            </div>
+            <div>
+                <button type="submit">Sign Up</button>
+                <a href="/login">Log In</a>
+            </div>
+        </form>
+    </section>
+
+    <script>
+        // let signup = document.getElementById('signup');
+        let errorStatus = document.querySelector('.errorMsg');
+
+        // Sign up form submit
+        document.forms['signupForm'].addEventListener('submit', (event) => {
+            event.preventDefault();
+            fetch(event.target.action, {
+                    method: 'POST',
+                    body: new URLSearchParams(new FormData(event.target))
+                })
+                .then(resp => resp.json())
+                .then(result => {
+                    console.log(result);
+                    if (result.status === 405) {
+                        errorStatus.style.display = "block";
+                        errorStatus.innerHTML = result.message;
+                        setTimeout(hideErrMsg, 3000);
+                    } else {
+                        location.href = "/login";
+                    }
+                })
+                .catch(e => {
+                    console.log(e.message);
+                    errorStatus.style.display = "block";
+                    errorStatus.innerHTML = e.message;
+                    setTimeout(hideErrMsg, 3000);
+                });
+        })
+
+        // Hide error message
+        function hideErrMsg() {
+            errorStatus.style.display = "none";
+            errorStatus.innerHTML = ""
+        }
+    </script>
+</body>
+
+</html>
