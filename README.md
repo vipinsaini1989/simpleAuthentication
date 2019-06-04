@@ -8,7 +8,7 @@ This web app consist of Frontend and Backend, which provides the user simple sig
 - Start server by using ```$ nodemon```
 - Open http://localhost:3000 in the browser.
 - You can try this app using below creds.
-> name: "test user" and password: "qwerty1"
+> name: "test user" and password: "Qwerty1"
 
 # File structure
 ### Backend
